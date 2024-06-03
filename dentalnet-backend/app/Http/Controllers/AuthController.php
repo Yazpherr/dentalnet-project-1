@@ -26,6 +26,30 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function register() {
+
+        $validator = Validator::make(request()->all(), [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:8',
+        ]);
+ 
+        if($validator->fails()){
+            return response()->json($validator->errors()->toJson(), 400);
+        }
+ 
+        $user = new User;
+        $user->name = request()->name;
+        $user->email = request()->email;
+        $user->password = bcrypt(request()->password);
+        $user->save();
+ 
+        return response()->json($user, 201);
+    }
+
+    public function reg() {
+
+        $this->authorize('create',User::class);
+
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -70,7 +94,15 @@ class AuthController extends Controller
     {
         return response()->json(auth('api')->user());
     }
- 
+
+    public function list()
+    {
+        $users = User::all();
+        return response()->json([
+            "users" => $users
+        ]);
+    }
+    
     /**
      * Log the user out (Invalidate the token).
      *

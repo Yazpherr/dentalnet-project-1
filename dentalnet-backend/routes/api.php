@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\Rol\RolesController;
+use App\Http\Controllers\Admin\Staff\StaffsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +22,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group([
- 
-    //'middleware' => 'auth:api',
+    
     'prefix' => 'auth',
-    'middleware' => ['auth:api','role:super-admin'],
+    //'middleware' => ['auth:api','role:admin'],
 ], function ($router) {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
-    Route::post('/me', [AuthController::class, 'me'])->name('me');
-    Route::post('/list', [AuthController::class, 'list'])->name('list');
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::post('/refresh', [AuthController::class, 'refresh'])->name('refresh');
+        Route::post('/me', [AuthController::class, 'me'])->name('me');
+        Route::post('/list', [AuthController::class, 'list']);
+        Route::post('/reg', [AuthController::class, 'reg']);
+    });
+});
+
+Route::group([
+    'middleware' => 'auth:api',
+], function($router) {
+    Route::resource("roles",RolesController::Class);
+    Route::get("staffs/config",[StaffsController::Class,"config"]);
+    Route::resource("staffs",StaffsController::Class);
 });

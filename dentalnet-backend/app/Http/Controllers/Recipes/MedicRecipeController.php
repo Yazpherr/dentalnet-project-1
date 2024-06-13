@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Recipes;
 
+use App\Http\Controllers\Controller;
 use App\Models\MedicRecipe;
 use Illuminate\Http\Request;
 

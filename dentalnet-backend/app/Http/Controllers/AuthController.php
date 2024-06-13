@@ -19,13 +19,15 @@ class AuthController extends Controller
     {
         $this->middleware('auth:api', ['except' => ['login','register']]);
     }
-
+ 
+ 
     /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function register() {
+
         $validator = Validator::make(request()->all(), [
             'name' => 'required',
             'email' => 'required|email|unique:users',
@@ -44,7 +46,7 @@ class AuthController extends Controller
  
         return response()->json($user, 201);
     }
-
+ 
     /**
      * Get a JWT via given credentials.
      *
@@ -53,7 +55,7 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
- 
+
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -70,7 +72,13 @@ class AuthController extends Controller
     {
         return response()->json(auth('api')->user());
     }
- 
+    
+    function list() {
+        $users = User::all();
+        return response()->json([
+            "users" => $users,
+        ]);
+    }
     /**
      * Log the user out (Invalidate the token).
      *
@@ -102,11 +110,21 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $permissions = auth("api")->user()->getAllPermissions()->map(function($perm) {
+            return $perm->name;
+        });
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user(),
+            "user" => [
+                "name" => auth('api')->user()->name,
+                "surname" => auth('api')->user()->surname,
+                // "avatar" => auth('api')->user()->avartar,
+                "email"=> auth('api')->user()->email,
+                "roles" => auth('api')->user()->getRoleNames(),
+                "permissions" => $permissions,
+            ],
         ]);
     }
 }

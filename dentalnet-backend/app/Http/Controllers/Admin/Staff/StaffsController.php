@@ -113,6 +113,7 @@ class StaffsController extends Controller
         }
 
         $user = User::findOrFail($id);
+
         if($request->hasFile("imagen")){
             if($user->avatar){
                 Storage::delete($user->avatar);

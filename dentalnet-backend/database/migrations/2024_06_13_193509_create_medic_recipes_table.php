@@ -13,11 +13,12 @@ class CreateMedicRecipesTable extends Migration
      */
     public function up()
     {
-        Schema::create('medic_recipes', function (Blueprint $table) {
+        Schema::create('MedicRecipes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('patient_id');
             $table->unsignedBigInteger('doctor_id');
             $table->text('description');
+            $table->text('medications');
             $table->date('date');
             $table->timestamps();
 
@@ -34,6 +35,6 @@ class CreateMedicRecipesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medic_recipes');
+        Schema::dropIfExists('MedicRecipes');
     }
 }

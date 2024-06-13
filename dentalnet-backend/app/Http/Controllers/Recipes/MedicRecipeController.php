@@ -21,6 +21,7 @@ class MedicRecipeController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
             'description' => 'required|string',
+            'medications' => 'required|string',
             'date' => 'required|date',
         ]);
 
@@ -42,6 +43,7 @@ class MedicRecipeController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
             'description' => 'required|string',
+            'medications' => 'required|string',
             'date' => 'required|date',
         ]);
 

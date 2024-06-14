@@ -94,7 +94,7 @@ class AppointmentController extends Controller
         $hour = $request->hour;
         $specialitie_id = $request->specialitie_id;
 
-        date_default_timezone_set('America/Lima');
+        date_default_timezone_set('America/Santiago');
         Carbon::setLocale('es');
         DB::statement("SET lc_time_names = 'es_ES'");
 
@@ -235,16 +235,6 @@ class AppointmentController extends Controller
                 "surname" => $request->surname,
                 "mobile" => $request->mobile,
                 "n_document" => $request->n_document,
-            ]);
-            PatientPerson::create([
-                "patient_id" => $patient->id,
-                "name_companion" => $request->name_companion,
-                "surname_companion" => $request->surname_companion,
-            ]);
-        }else{
-            $patient->person->update([
-                "name_companion" => $request->name_companion,
-                "surname_companion" => $request->surname_companion,
             ]);
         }
 

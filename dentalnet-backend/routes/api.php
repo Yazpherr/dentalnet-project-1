@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Recipes\MedicRecipeController;
+use App\Http\Controllers\MedicRecipeController;
 use App\Http\Controllers\Admin\Rol\RolesController;
 use App\Http\Controllers\Patient\PatientController;
 use App\Http\Controllers\Admin\Staff\StaffsController;

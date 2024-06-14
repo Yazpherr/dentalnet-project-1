@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 22:24:44
+-- Tiempo de generación: 14-06-2024 a las 05:14:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -5114,9 +5114,19 @@ INSERT INTO `appointment_pays` (`id`, `appointment_id`, `amount`, `method_paymen
 
 CREATE TABLE `doctors` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `speciality_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `doctors`
+--
+
+INSERT INTO `doctors` (`id`, `name`, `speciality_id`, `created_at`, `updated_at`) VALUES
+(1, 'Mario Sepulveda', 2, NULL, NULL),
+(2, 'Maria Gomez', 5, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5567,12 +5577,21 @@ CREATE TABLE `failed_jobs` (
 CREATE TABLE `medic_recipes` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `patient_id` bigint(20) UNSIGNED NOT NULL,
+  `date` date NOT NULL,
   `doctor_id` bigint(20) UNSIGNED NOT NULL,
+  `medications` text NOT NULL,
   `description` text NOT NULL,
-  `medications` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`medications`)),
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `medic_recipes`
+--
+
+INSERT INTO `medic_recipes` (`id`, `patient_id`, `date`, `doctor_id`, `medications`, `description`, `created_at`, `updated_at`) VALUES
+(1, 1, '2024-06-13', 2, 'pasta de dientes con carbon activo', 'No consumir dulces ', NULL, NULL),
+(2, 2, '2024-06-13', 1, 'lavarse los dientes con blanqueamiento', 'No consumir pasteles', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5595,9 +5614,14 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (2, '2014_10_12_100000_create_password_reset_tokens_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
 (4, '2019_12_14_000001_create_personal_access_tokens_table', 1),
-(5, '2023_09_26_035739_create_permission_tables', 1),
-(6, '2024_06_12_190316_create_doctors_table', 2),
-(7, '2024_06_13_193509_create_medic_recipes_table', 3);
+(8, '2024_06_13_204355_add_medications_to_medic_recipes_table', 4),
+(9, '2014_10_12_000000_create_users_table', 5),
+(10, '2014_10_12_100000_create_password_reset_tokens_table', 5),
+(11, '2019_08_19_000000_create_failed_jobs_table', 5),
+(12, '2019_12_14_000001_create_personal_access_tokens_table', 5),
+(16, '2023_09_26_035739_create_permission_tables', 6),
+(17, '2024_06_14_020853_create_doctors_table', 6),
+(18, '2024_06_14_020933_create_medic_recipes_table', 6);
 
 -- --------------------------------------------------------
 
@@ -5622,22 +5646,6 @@ CREATE TABLE `model_has_roles` (
   `model_type` varchar(255) NOT NULL,
   `model_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `model_has_roles`
---
-
-INSERT INTO `model_has_roles` (`role_id`, `model_type`, `model_id`) VALUES
-(1, 'App\\Models\\User', 1),
-(2, 'App\\Models\\User', 2),
-(2, 'App\\Models\\User', 4),
-(2, 'App\\Models\\User', 9),
-(2, 'App\\Models\\User', 10),
-(2, 'App\\Models\\User', 11),
-(3, 'App\\Models\\User', 5),
-(3, 'App\\Models\\User', 6),
-(3, 'App\\Models\\User', 7),
-(10, 'App\\Models\\User', 12);
 
 -- --------------------------------------------------------
 
@@ -6228,45 +6236,6 @@ CREATE TABLE `permissions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `permissions`
---
-
-INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'register_rol', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(2, 'list_rol', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(3, 'edit_rol', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(4, 'delete_rol', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(5, 'register_doctor', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(6, 'list_doctor', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(7, 'edit_doctor', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(8, 'delete_doctor', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(9, 'profile_doctor', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(10, 'register_patient', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(11, 'list_patient', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(12, 'edit_patient', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(13, 'delete_patient', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(14, 'profile_patient', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(15, 'register_staff', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(16, 'list_staff', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(17, 'edit_staff', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(18, 'delete_staff', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(19, 'register_appointment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(20, 'list_appointment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(21, 'edit_appointment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(22, 'delete_appointment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(23, 'register_specialty', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(24, 'list_specialty', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(25, 'edit_specialty', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(26, 'delete_specialty', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(27, 'show_payment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(28, 'edit_payment', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(29, 'activitie', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(30, 'calendar', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(31, 'expense_report', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(32, 'invoice_report', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(33, 'settings', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56');
-
 -- --------------------------------------------------------
 
 --
@@ -6300,16 +6269,6 @@ CREATE TABLE `roles` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Volcado de datos para la tabla `roles`
---
-
-INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
-(1, 'Super-Admin', 'api', '2023-09-28 10:46:56', '2023-09-28 10:46:56'),
-(2, 'DOCTOR', 'api', '2023-09-28 12:08:34', '2023-09-28 12:08:34'),
-(3, 'ENFERMERO', 'api', '2023-09-28 12:10:34', '2023-09-28 12:10:34'),
-(10, 'PACIENTE', 'api', '2023-10-06 11:54:45', '2023-10-06 11:54:45');
-
 -- --------------------------------------------------------
 
 --
@@ -6320,39 +6279,6 @@ CREATE TABLE `role_has_permissions` (
   `permission_id` bigint(20) UNSIGNED NOT NULL,
   `role_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Volcado de datos para la tabla `role_has_permissions`
---
-
-INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
-(2, 2),
-(3, 2),
-(10, 3),
-(10, 10),
-(11, 2),
-(11, 3),
-(11, 10),
-(12, 2),
-(12, 3),
-(12, 10),
-(13, 3),
-(13, 10),
-(14, 2),
-(14, 3),
-(14, 10),
-(19, 2),
-(19, 3),
-(20, 2),
-(20, 3),
-(21, 2),
-(21, 3),
-(22, 3),
-(23, 2),
-(24, 2),
-(25, 2),
-(26, 2),
-(30, 2);
 
 -- --------------------------------------------------------
 
@@ -6421,7 +6347,8 @@ INSERT INTO `users` (`id`, `name`, `surname`, `email`, `specialitie_id`, `mobile
 (3, 'Felipe-dev', 'Dev', 'dev-front@exe.com', NULL, '999999999', '2023-10-02 11:29:40', 1, 'DFFSDFSDFSDFSDFSD', 'FSDFSDFSDFSDFSDFSD', 'adsasdasdasdasdasdasd', 'staffs/roA8IMoEbENcKIPipkjhcAX36qcAilWdXmq2dCsH.png', NULL, '$2y$10$LGGmvECbC5WyED/uhlJGlurkGvqLsSz8csHpX5cOmGVGQxklhIJbG', NULL, '2023-10-02 11:29:40', '2023-10-02 11:29:40', NULL),
 (4, 'Hichi-back', 'DEV', 'dev-back@exe.com', NULL, '999666666', '2023-10-03 09:06:35', 1, 'DFFSDFSDFSDFSDFSD', 'FSDFSDFSDFSDFSDFSD', 'sdffgfgsdfgsfgfgsfgsfgsdsdfg', 'staffs/BJOQclSTWxSAmJJqPU8tAbmK1NIf1J9nYTyug8Jd.png', NULL, '$2y$10$f586zgUflN8tY0c73qdWnO1DzoHvvufH/NCplzRk4koGYPt.diaiu', NULL, '2023-10-03 09:06:35', '2023-10-03 10:42:15', NULL),
 (5, 'Dentista Nro°1', 'Dental', 'dental1@gmail.com', 2, '999999999', '1998-11-04 10:00:00', 1, 'Medicina especializada', 'Doctor del Area', 'sdfsdsdfsdfsdfsdfsdfsd', 'staffs/2ToLtUCZauJcPatG5bf2KpTuW5ijAzPqKDyQMuFL.png', NULL, '$2y$10$or038BMmKk/4MMwLmfkp4ef7Tklz8ltlkjKz02kKZkr.ryb6l5gaO', NULL, '2023-10-06 11:22:49', '2023-10-18 11:23:36', NULL),
-(6, 'Dentista Nro°2', 'Dental', 'dental2@gmail.com', 5, '999999999', '1999-03-11 10:00:00', 2, 'Doctora especializada', 'Jefa de departamento', 'sdfdfssdfsdfsdfsdfsdfCODEEEEEEEEEEEEE', 'staffs/OCFdqEhHaiGiftTvFkFGGWrkB0HWd0ktYDcGEpYm.png', NULL, '$2y$10$0XKhxUtP//iFhKiHgYzD2.5qMaqZ9jNvyS99wnogY9OcOLVeIi49W', NULL, '2023-10-06 11:28:29', '2023-10-28 19:24:42', NULL);
+(6, 'Dentista Nro°2', 'Dental', 'dental2@gmail.com', 5, '999999999', '1999-03-11 10:00:00', 2, 'Doctora especializada', 'Jefa de departamento', 'sdfdfssdfsdfsdfsdfsdfCODEEEEEEEEEEEEE', 'staffs/OCFdqEhHaiGiftTvFkFGGWrkB0HWd0ktYDcGEpYm.png', NULL, '$2y$10$0XKhxUtP//iFhKiHgYzD2.5qMaqZ9jNvyS99wnogY9OcOLVeIi49W', NULL, '2023-10-06 11:28:29', '2023-10-28 19:24:42', NULL),
+(13, 'Usertest', NULL, 'user@test.com', NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, '$2y$10$ewp7mGJ3cVUg9AfY2EX0R.PBzcMGhygdYi7DpApffL9ZSGq5wtt1m', NULL, '2024-06-14 07:06:02', '2024-06-14 07:06:02', NULL);
 
 --
 -- Índices para tablas volcadas
@@ -6449,7 +6376,8 @@ ALTER TABLE `appointment_pays`
 -- Indices de la tabla `doctors`
 --
 ALTER TABLE `doctors`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `doctors_speciality_id_foreign` (`speciality_id`);
 
 --
 -- Indices de la tabla `doctor_schedule_days`
@@ -6591,7 +6519,7 @@ ALTER TABLE `appointment_pays`
 -- AUTO_INCREMENT de la tabla `doctors`
 --
 ALTER TABLE `doctors`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `doctor_schedule_days`
@@ -6621,13 +6549,13 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT de la tabla `medic_recipes`
 --
 ALTER TABLE `medic_recipes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `patients`
@@ -6645,7 +6573,7 @@ ALTER TABLE `patient_persons`
 -- AUTO_INCREMENT de la tabla `permissions`
 --
 ALTER TABLE `permissions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `personal_access_tokens`
@@ -6657,7 +6585,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `specialities`
@@ -6669,11 +6597,17 @@ ALTER TABLE `specialities`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `doctors`
+--
+ALTER TABLE `doctors`
+  ADD CONSTRAINT `doctors_speciality_id_foreign` FOREIGN KEY (`speciality_id`) REFERENCES `specialities` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `doctor_schedule_join_hours`

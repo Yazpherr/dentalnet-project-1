@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class MedicRecipeController extends Controller
 {
+    
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+        $this->middleware('doctor')->only(['index', 'show']);
+    }
+    
     // Display a listing of the resource.
     public function index()
     {

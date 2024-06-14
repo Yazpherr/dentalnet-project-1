@@ -23,7 +23,7 @@ class Patient extends Model
         "address",
         "antecedent_family",
         "antecedent_personal",
-        "current_disease",
+        "Problema_dental",
         "peso",
         "n_document",
         // "created_at"

@@ -80,5 +80,5 @@ Route::group([
     Route::get("dashboard/config",[DashboardKpiController::class,"config"]);
     Route::post("dashboard/doctor-year",[DashboardKpiController::class,"dashboard_doctor_year"]);
 
-    Route::resource("medic_recipes", MedicRecipeController::class);
+    Route::resource("medicrecipes", MedicRecipeController::class);
 });

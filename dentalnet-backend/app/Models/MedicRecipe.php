@@ -13,6 +13,7 @@ class MedicRecipe extends Model
         'patient_id',
         'doctor_id',
         'description',
+        'medications',
         'date',
     ];
 

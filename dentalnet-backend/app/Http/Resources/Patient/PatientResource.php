@@ -32,18 +32,6 @@ class PatientResource extends JsonResource
             "antecedent_personal" => $this->resource->antecedent_personal,
             "Problema_dental" => $this->resource->current_disease,
             "peso" => $this->resource->peso,
-            "person" => $this->resource->person ? [
-                "id" => $this->resource->person->id,
-                "patient_id" => $this->resource->person->patient_id,
-                "name_companion" => $this->resource->person->name_companion,
-                "surname_companion" => $this->resource->person->surname_companion,
-                "mobile_companion" => $this->resource->person->mobile_companion,
-                "relationship_companion" => $this->resource->person->relationship_companion,
-                "name_responsible" => $this->resource->person->name_responsible,
-                "surname_responsible" => $this->resource->person->surname_responsible,
-                "mobile_responsible" => $this->resource->person->mobile_responsible,
-                "relationship_responsible" => $this->resource->person->relationship_responsible,
-            ]: NULL,
             "created_at" => $this->resource->created_at->format("Y-m-d h:i A"),
         ];
     }
